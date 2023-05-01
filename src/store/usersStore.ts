@@ -1,26 +1,27 @@
 import { v4 as uuidv4 } from 'uuid';
-import { makeObservable, observable, computed, autorun, action } from 'mobx';
+import {
+  makeObservable,
+  observable,
+  computed,
+  action,
+  flow,
+  autorun,
+  runInAction,
+  makeAutoObservable,
+} from 'mobx';
 import { Role, Status, User } from '../../types/User';
 
 class UsersStore {
   user: User = this.resetUser();
   users: User[] = [];
-  loading: boolean = true
 
   constructor() {
-    makeObservable(this, {
-      user: observable,
-      users: observable,
-      loading: observable,
-      report: computed,
-      usersList: computed,
-      addUser: action,
-    });
+    makeAutoObservable(this);
   }
 
   resetUser() {
     return {
-      id: uuidv4(),
+      id: '',
       name: '',
       email: '',
       role: Role.User,
@@ -32,13 +33,16 @@ class UsersStore {
     this.users = users;
   }
 
-  addUser(newUser: User) {
-    this.loading = false
-    this.users.push(newUser);
-    this.loading = true
+  resetUsers() {
+    fetchUsers();
   }
 
-  get usersList() {
+  // CRUD
+  addUser(newUser: User) {
+    this.users.push(newUser);
+  }
+
+  get getUsers() {
     return this.users;
   }
 
@@ -49,8 +53,16 @@ class UsersStore {
   }
 }
 
-// fetch('http://localhost:4000/users')
-//   .then((res) => res.json())
-//   .then((users) => usersStore.setUsers(users));
-
 export const usersStore = new UsersStore();
+
+const fetchUsers = () => {
+  fetch('http://localhost:4000/users')
+    .then((res) => res.json())
+    .then((users) => {
+      console.log('🚀 ~ file: usersStore.ts:63 ~ .then ~ users:', users);
+
+      usersStore.setUsers(users);
+    });
+};
+
+fetchUsers();

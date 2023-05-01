@@ -5,6 +5,8 @@ import { Role, Status } from '../../../types/User';
 import { usersStore } from '@/store/usersStore';
 import { v4 as uuidv4 } from 'uuid';
 import { observer } from 'mobx-react-lite';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const handleSubmit = (values: any) => {
   console.log('here at handleSubmit:', values);
@@ -19,19 +21,24 @@ const handleSubmit = (values: any) => {
 };
 
 const AddUser = () => {
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       name: '',
       email: '',
       role: 'User',
+      status: Status.Active,
     },
     onSubmit: (values: any) => {
       handleSubmit(values);
-      formik.resetForm()
+      formik.resetForm();
+      router.push('/');
     },
   });
   return (
-    <>
+    <div className='container max-w-md mx-auto my-auto flex flex-col items-center justify-center h-screen'>
+      <Link href='/' className='bg-gray-700 text-white px-4 py-2 rounded-md mb-4'>Back</Link>
       <form onSubmit={formik.handleSubmit} className='flex flex-col'>
         <div className='mb-4 bg-slate-300'>
           <label className='mr-4' htmlFor='name'>
@@ -83,9 +90,9 @@ const AddUser = () => {
           </select>
         </div>
 
-        <input type='submit' value='Submit' />
+        <input className='bg-gray-700 text-white px-4 py-2 rounded-md' type='submit' value='Submit' />
       </form>
-    </>
+    </div>
   );
 };
 
