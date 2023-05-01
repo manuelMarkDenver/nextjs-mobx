@@ -4,15 +4,15 @@
       "id": 1,
       "name": "John Doe",
       "email": "johndoe@example.com",
-      "role": "user",
-      "status": "active"
+      "role": "User",
+      "status": "Active"
     },
     {
       "id": 2,
       "name": "Jane Doe",
       "email": "janedoe@example.com",
-      "role": "admin",
-      "status": "suspended"
+      "role": "Admin",
+      "status": "Suspended"
     }
   ]
 }
