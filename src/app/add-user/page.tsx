@@ -11,8 +11,9 @@ import { useRouter } from 'next/navigation';
 const handleSubmit = (values: any) => {
   console.log('here at handleSubmit:', values);
   const { name, email, role } = values;
+  const maxNum = usersStore.getUsers && usersStore.getUsers.length + 1;
   usersStore.addUser({
-    id: uuidv4(),
+    id: maxNum,
     name,
     email,
     role,
@@ -28,7 +29,7 @@ const AddUser = () => {
       name: '',
       email: '',
       role: 'User',
-      status: Status.Active,
+      status: 'Active',
     },
     onSubmit: (values: any) => {
       handleSubmit(values);
@@ -38,7 +39,12 @@ const AddUser = () => {
   });
   return (
     <div className='container max-w-md mx-auto my-auto flex flex-col items-center justify-center h-screen'>
-      <Link href='/' className='bg-gray-700 text-white px-4 py-2 rounded-md mb-4'>Back</Link>
+      <Link
+        href='/'
+        className='bg-gray-700 text-white px-4 py-2 rounded-md mb-4'
+      >
+        Back
+      </Link>
       <form onSubmit={formik.handleSubmit} className='flex flex-col'>
         <div className='mb-4 bg-slate-300'>
           <label className='mr-4' htmlFor='name'>
@@ -90,7 +96,11 @@ const AddUser = () => {
           </select>
         </div>
 
-        <input className='bg-gray-700 text-white px-4 py-2 rounded-md' type='submit' value='Submit' />
+        <input
+          className='bg-gray-700 text-white px-4 py-2 rounded-md'
+          type='submit'
+          value='Submit'
+        />
       </form>
     </div>
   );
