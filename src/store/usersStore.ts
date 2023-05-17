@@ -39,6 +39,13 @@ class UsersStore {
     this.isLoading = false;
   }
 
+  deleteUser(id: number) {
+    this.isLoading = true;
+    const updatedUsers = this.users.filter(user => user.id !== id)
+    this.users = updatedUsers
+    this.isLoading = false;
+  }
+
   get getUsers() {
     this.isLoading = true;
     return this.users;
@@ -59,11 +66,16 @@ class UsersStore {
 export const usersStore = new UsersStore();
 
 const fetchUsers = async () => {
-  const data = await fetch('http://localhost:4000/users').then((res) =>
-    res.json()
-  );
-  usersStore.setUsers(data);
-  return data;
+  try {
+    const data = await fetch('http://localhost:4000/users').then((res) =>
+      res.json()
+    );
+    usersStore.setUsers(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return []
+  }
 };
 
 fetchUsers();

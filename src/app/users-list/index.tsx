@@ -8,6 +8,11 @@ const UsersList = () => {
   const usersFromBackEnd = usersStore.getUsers;
   const [users, setusers] = useState<User[]>([]);
 
+const handleDelete: any = (id: any) => {
+  console.log("🚀 ~ file: UsersListTable.tsx:16 ~ id:", id)
+  usersStore.deleteUser(id);
+};
+
   useEffect(() => {
     const assignUsers = () => {
       setusers(usersFromBackEnd);
@@ -18,11 +23,11 @@ const UsersList = () => {
 
   if (!users) return <p>No data</p>;
 
-  if (users.length === 0) return <p>loading...</p>;
+  if (users.length === 0) return <p>No users yet.</p>;
 
   return (
     <>
-      <UsersListTable users={users} />
+      <UsersListTable users={users} onDelete={handleDelete}/>
     </>
   );
 };
